@@ -1,0 +1,62 @@
+@startuml
+!define RECTANGLE rectangle
+skinparam rectangle {
+  BackgroundColor<<service>> #E3F2FD
+  BorderColor<<service>> #1565C0
+  RoundCorner 15
+}
+skinparam rectangle {
+  BackgroundColor<<db>> #FFF9C4
+  BorderColor<<db>> #FBC02D
+  RoundCorner 15
+}
+skinparam rectangle {
+  BackgroundColor<<infra>> #F1F8E9
+  BorderColor<<infra>> #558B2F
+  RoundCorner 15
+}
+
+actor Rider
+actor Driver
+
+RECTANGLE Keycloak <<infra>>
+RECTANGLE Kafka <<infra>>
+
+RECTANGLE "gateway-service" as Gateway <<service>>
+RECTANGLE "user-service" as UserSvc <<service>>
+RECTANGLE "ride-service" as RideSvc <<service>>
+RECTANGLE "driver-service" as DriverSvc <<service>>
+RECTANGLE "payment-service" as PaymentSvc <<service>>
+
+RECTANGLE "PostgreSQL\n(user-db)" as UserDB <<db>>
+RECTANGLE "PostgreSQL\n(ride-db)" as RideDB <<db>>
+RECTANGLE "MongoDB\n(driver-db)" as DriverDB <<db>>
+RECTANGLE "PostgreSQL\n(payment-db)" as PaymentDB <<db>>
+
+' Actors
+Rider --> Gateway : REST /api/rides
+Driver --> Gateway : REST /api/users
+
+' Sync flows
+Gateway --> RideSvc : REST
+Gateway --> UserSvc : REST
+Gateway --> PaymentSvc : REST (pre-auth)
+
+RideSvc --> UserSvc : REST (validate rider)
+RideSvc --> DriverSvc : REST (availability check)\n[CB demo]
+
+' Async simplified
+RideSvc --> Kafka
+DriverSvc --> Kafka
+PaymentSvc --> Kafka
+
+' DB links
+UserSvc --> UserDB
+RideSvc --> RideDB
+DriverSvc --> DriverDB
+PaymentSvc --> PaymentDB
+
+' IAM simplified
+Gateway --> Keycloak : OAuth2 / JWT validation
+
+@enduml

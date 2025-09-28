@@ -1,0 +1,47 @@
+@startuml
+actor Rider
+
+participant Gateway
+participant "ride-service" as Ride
+participant "user-service" as User
+participant "driver-service" as Driver
+participant "payment-service" as Payment
+participant Kafka
+
+== Ride Request ==
+Rider -> Gateway : POST /api/rides
+Gateway -> Ride : REST /rides (create ride)
+
+Ride -> User : REST /users/{id}\n(validate rider)
+User --> Ride : 200 OK (user valid)
+
+Ride -> Ride : Save ride (status=REQUESTED)\n+ outbox entry
+Ride -> Kafka : publish RideRequested
+
+== Driver Assignment ==
+Kafka -> Driver : RideRequested
+Driver -> Driver : Find available driver
+alt Driver found
+  Driver -> Kafka : publish DriverAssigned
+else No driver
+  Driver -> Kafka : publish DriverAssignmentFailed
+end
+
+== Payment ==
+Kafka -> Payment : DriverAssigned
+Payment -> Payment : Authorize payment (simulate)
+alt Payment success
+  Payment -> Kafka : publish PaymentAuthorized
+else Payment failed
+  Payment -> Kafka : publish PaymentFailed
+end
+
+== Ride Status Update ==
+Kafka -> Ride : DriverAssigned / DriverAssignmentFailed / PaymentAuthorized / PaymentFailed
+Ride -> Ride : Update ride status accordingly
+
+== Compensation ==
+Kafka -> Driver : PaymentFailed
+Driver -> Driver : Release reserved driver
+
+@enduml
