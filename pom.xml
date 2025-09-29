@@ -12,6 +12,7 @@
         <modules>
     <!--        <module>gateway-service</module>-->
             <module>user-service</module>
+            <module>deploy</module>
     <!--        <module>ride-service</module>-->
     <!--        <module>driver-service</module>-->
     <!--        <module>payment-service</module>-->
