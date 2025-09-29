@@ -10,6 +10,7 @@ services:
       - "5432:5432"
     volumes:
       - ride-flow-pgdata:/var/lib/postgresql/data
+      - ./init-scripts:/docker-entrypoint-initdb.d
 
   keycloak-db:
     image: postgres:16

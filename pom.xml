@@ -24,6 +24,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring-boot.version>3.5.6</spring-boot.version>
         <lombok.version>1.18.42</lombok.version>
+        <flyway.version>11.13.2</flyway.version>
     </properties>
 
     <dependencyManagement>
@@ -39,6 +40,16 @@
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>${lombok.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-core</artifactId>
+                <version>${flyway.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-database-postgresql</artifactId>
+                <version>${flyway.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
