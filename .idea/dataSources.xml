@@ -13,7 +13,7 @@
       </jdbc-additional-properties>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="jdbc:postgresql://localhost:5432/userdb [DEBUG]" group="​UserServiceApplication" uuid="37665d6d-783e-4c9c-b4a9-32f292f00638">
+    <data-source source="LOCAL" name="jdbc:postgresql://localhost:5432/userdb [DEBUG]" group="​UserServiceApplication" uuid="35be208f-d210-4a54-9ad2-3614c8475541">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <imported>true</imported>
