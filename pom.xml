@@ -25,6 +25,7 @@
         <spring-boot.version>3.5.6</spring-boot.version>
         <lombok.version>1.18.42</lombok.version>
         <flyway.version>11.13.2</flyway.version>
+        <mapstruct.version>1.6.3</mapstruct.version>
         <spotless.version>3.0.0</spotless.version>
         <googleJavaFormat.version>1.29.0</googleJavaFormat.version>
     </properties>
@@ -52,6 +53,11 @@
                 <groupId>org.flywaydb</groupId>
                 <artifactId>flyway-database-postgresql</artifactId>
                 <version>${flyway.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct</artifactId>
+                <version>${mapstruct.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
