@@ -20,7 +20,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/User"
+                  $ref: "#/components/schemas/UserRequest"
     post:
       summary: Create a new user
       operationId: createUser
@@ -36,7 +36,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/User"
+                $ref: "#/components/schemas/UserRequest"
 
   /users/{id}:
     get:
@@ -55,13 +55,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/User"
+                $ref: "#/components/schemas/UserRequest"
         "404":
           description: User not found
 
 components:
   schemas:
-    User:
+    UserRequest:
       type: object
       properties:
         id:
