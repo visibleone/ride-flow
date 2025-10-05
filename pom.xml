@@ -25,6 +25,8 @@
         <spring-boot.version>3.5.6</spring-boot.version>
         <lombok.version>1.18.42</lombok.version>
         <flyway.version>11.13.2</flyway.version>
+        <spotless.version>3.0.0</spotless.version>
+        <googleJavaFormat.version>1.29.0</googleJavaFormat.version>
     </properties>
 
     <dependencyManagement>
@@ -61,6 +63,32 @@
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
                     <version>${spring-boot.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>com.diffplug.spotless</groupId>
+                    <artifactId>spotless-maven-plugin</artifactId>
+                    <version>${spotless.version}</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>apply</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>check</id>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <java>
+                            <googleJavaFormat>
+                                <version>${googleJavaFormat.version}</version>
+                            </googleJavaFormat>
+                        </java>
+                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>

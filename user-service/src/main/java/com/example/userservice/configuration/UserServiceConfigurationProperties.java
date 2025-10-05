@@ -8,10 +8,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Setter
 @ConfigurationProperties(prefix = "user-service")
 public class UserServiceConfigurationProperties {
-    private String apiVersion;
-    private String apiTitle;
-    private String apiDescription;
+  private String apiVersion;
+  private String apiTitle;
+  private String apiDescription;
 }
-
-
-

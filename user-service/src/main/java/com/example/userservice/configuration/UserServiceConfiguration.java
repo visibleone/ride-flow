@@ -9,14 +9,15 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @RequiredArgsConstructor
 public class UserServiceConfiguration {
-    private final UserServiceConfigurationProperties properties;
+  private final UserServiceConfigurationProperties properties;
 
-    @Bean
-    public OpenAPI customOpenAPI() {
-        return new OpenAPI()
-                .info(new Info()
-                        .title(properties.getApiTitle())
-                        .description(properties.getApiDescription())
-                        .version(properties.getApiVersion()));
-    }
+  @Bean
+  public OpenAPI customOpenAPI() {
+    return new OpenAPI()
+        .info(
+            new Info()
+                .title(properties.getApiTitle())
+                .description(properties.getApiDescription())
+                .version(properties.getApiVersion()));
+  }
 }
