@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.openapitools.api.UsersApi;
 import org.openapitools.model.UserCreateRequest;
 import org.openapitools.model.UserRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,7 +22,7 @@ public class UserController implements UsersApi {
     log.debug("createUser: {}", userCreateRequest);
     UserRequest userRequest = userService.createUser(userCreateRequest);
 
-    return ResponseEntity.ok(userRequest);
+    return ResponseEntity.status(HttpStatus.CREATED).body(userRequest);
   }
 
   public ResponseEntity<UserRequest> getUserById(UUID id) {
