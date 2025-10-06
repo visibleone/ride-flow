@@ -12,7 +12,8 @@ public class UserServiceConfiguration {
   private final UserServiceConfigurationProperties properties;
 
   @Bean
-  public OpenAPI customOpenAPI() {
+  // Required to have the correct API version in the Swagger UI
+  public OpenAPI overrideOpenApiInfoSpec() {
     return new OpenAPI()
         .info(
             new Info()
