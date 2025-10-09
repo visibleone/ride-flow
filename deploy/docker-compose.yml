@@ -19,12 +19,14 @@ services:
       POSTGRES_USER: keycloak
       POSTGRES_PASSWORD: keycloak
     volumes:
-      - ride-flow-kcpg:/var/lib/postgresql/data
+      - ride-flow-keycloak-db:/var/lib/postgresql/data
 
   keycloak:
-    image: quay.io/keycloak/keycloak:24.0.5
-    command: >
-      start-dev --import-realm
+    image: quay.io/keycloak/keycloak:26.3.1
+    command:
+      - start-dev
+      - --spi-events-listener-ext-event-webhook-enabled=true
+      - --import-realm
     environment:
       KC_DB: postgres
       KC_DB_URL: jdbc:postgresql://keycloak-db:5432/keycloak
@@ -37,7 +39,8 @@ services:
       KC_HOSTNAME_STRICT_HTTPS: false
       KC_HTTP_PORT: 8080
     volumes:
-      - ./keycloak/realm-export.json:/opt/keycloak/data/import/realm-export.json
+      - ./providers/keycloak-events-0.50-SNAPSHOT.jar:/opt/keycloak/providers/keycloak-events-0.50-SNAPSHOT.jar
+      - ./keycloak/rideflow-realm-realm.json:/opt/keycloak/data/import/rideflow-realm-realm.json
     ports:
       - "8081:8080"
     depends_on:
@@ -45,4 +48,4 @@ services:
 
 volumes:
   ride-flow-pgdata: {}
-  ride-flow-kcpg: {}
+  ride-flow-keycloak-db: {}
