@@ -1,6 +1,6 @@
 package com.example.userservice;
 
-import com.example.userservice.configuration.UserServiceConfigurationProperties;
+import com.example.userservice.config.UserServiceConfigurationProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
