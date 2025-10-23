@@ -1,16 +1,15 @@
-version: "3.9"
-
 services:
   # ---------- Infrastructure ----------
-  postgres:
+  postgres-user:
     image: postgres:16
     environment:
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: userdb
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: user
     ports:
       - "5432:5432"
     volumes:
-      - ride-flow-pgdata:/var/lib/postgresql/data
-      - ./init-scripts:/docker-entrypoint-initdb.d
+      - ride-flow-user-db:/var/lib/postgresql/data
 
   keycloak-db:
     image: postgres:16
@@ -25,8 +24,7 @@ services:
     image: quay.io/keycloak/keycloak:26.3.1
     command:
       - start-dev
-      - --spi-events-listener-ext-event-webhook-enabled=true
-      - --import-realm
+#      - --import-realm
     environment:
       KC_DB: postgres
       KC_DB_URL: jdbc:postgresql://keycloak-db:5432/keycloak
@@ -39,7 +37,6 @@ services:
       KC_HOSTNAME_STRICT_HTTPS: false
       KC_HTTP_PORT: 8080
     volumes:
-      - ./providers/keycloak-events-0.50-SNAPSHOT.jar:/opt/keycloak/providers/keycloak-events-0.50-SNAPSHOT.jar
       - ./keycloak/rideflow-realm-realm.json:/opt/keycloak/data/import/rideflow-realm-realm.json
     ports:
       - "8081:8080"
@@ -47,5 +44,5 @@ services:
       - keycloak-db
 
 volumes:
-  ride-flow-pgdata: {}
+  ride-flow-user-db: {}
   ride-flow-keycloak-db: {}
