@@ -1,3 +1,6 @@
 logging:
   level:
-    com.example: debug
+    com.example: DEBUG
+    org.springframework.cloud.gateway: DEBUG
+    org.springframework.web.reactive.function.server: DEBUG
+    reactor.netty.http.server: DEBUG

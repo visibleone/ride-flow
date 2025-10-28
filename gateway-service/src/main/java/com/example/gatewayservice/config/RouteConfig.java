@@ -16,11 +16,11 @@ public class RouteConfig {
   public RouteLocator routes(RouteLocatorBuilder builder) {
     return builder
         .routes()
-        // User service (for Keycloak webhook + user APIs)
+        // User service
         .route(
             "user-service",
             r ->
-                r.path("/api/users/**")
+                r.path("/api/v1/users/**")
                     .filters(
                         f ->
                             f.circuitBreaker(
@@ -28,10 +28,7 @@ public class RouteConfig {
                                     config
                                         .setName("userServiceCircuitBreaker")
                                         .setFallbackUri("forward:/fallback/user-service")))
-                    .uri("http://user-service:8080"))
-        // Example: Ride service
-        //        .route("ride-service", r ->
-        // r.path("/api/rides/**").uri("http://ride-service:8080"))
+                    .uri("http://localhost:8082"))
         .build();
   }
 
