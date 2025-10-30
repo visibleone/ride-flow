@@ -70,20 +70,26 @@ components:
         id:
           type: string
           format: uuid
+          example: "123e4567-e89b-12d3-a456-426614174000"
         keycloakId:
           type: string
           format: uuid
+          example: "987fcdeb-51a2-43d7-9c8f-123456789abc"
         email:
           type: string
           format: email
+          example: "john.doe@example.com"
         name:
           type: string
+          example: "John Doe"
         role:
           type: string
           enum: [RIDER, DRIVER]
+          example: "RIDER"
         createdAt:
           type: string
           format: date-time
+          example: "2024-01-15T10:30:00Z"
       required: [id, keycloakId, email, name, role]
 
     UserCreateRequest:
@@ -92,12 +98,22 @@ components:
         keycloakId:
           type: string
           format: uuid
+          example: "987fcdeb-51a2-43d7-9c8f-123456789abc"
         email:
           type: string
           format: email
+          example: "jane.smith@example.com"
         name:
           type: string
+          example: "Jane Smith"
         role:
           type: string
           enum: [RIDER, DRIVER]
+          example: "DRIVER"
+        vehicle:
+          type: string
+          example: "Toyota Camry 2022"
+        licenseNumber:
+          type: string
+          example: "DL-1234567890"
       required: [keycloakId, email, name, role]

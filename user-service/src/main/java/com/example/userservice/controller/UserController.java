@@ -16,9 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
+// TODO: Consider introducing driver and rider sub-resources, like: /users/{id}/driver
+// TODO: Make POST idempotent with idempotency key = keycloak id
 public class UserController implements UsersApi {
   private final UserService userService;
-  private static final String DRIVER_ROLE = "driver";
 
   @Override
   public ResponseEntity<UserRequest> createUser(UserCreateRequest userCreateRequest) {
@@ -36,6 +37,7 @@ public class UserController implements UsersApi {
     return ResponseEntity.ok(userRequest);
   }
 
+  // TODO: Remove authority check (TEST ONLY)
   @PreAuthorize("hasAuthority('ROLE_driver')")
   @Override
   public ResponseEntity<List<UserRequest>> listUsers() {

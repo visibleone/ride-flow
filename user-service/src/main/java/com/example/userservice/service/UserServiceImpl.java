@@ -23,6 +23,8 @@ public class UserServiceImpl implements UserService {
     User user = userMapper.userCreateRequestToUser(request);
     User savedUser = userRepository.save(user);
 
+    // TODO: If DRIVER, create driver profile in driver-service
+
     return userMapper.userToUserRequest(savedUser);
   }
 

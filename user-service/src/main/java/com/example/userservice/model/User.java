@@ -3,13 +3,12 @@ package com.example.userservice.model;
 import jakarta.persistence.*;
 import java.time.Instant;
 import java.util.UUID;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Table(name = "users")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
@@ -26,8 +25,9 @@ public class User {
   @Column(nullable = false)
   private String name;
 
+  @Enumerated(EnumType.STRING)
   @Column(nullable = false)
-  private String role; // RIDER or DRIVER
+  private UserRole role; // RIDER or DRIVER
 
   @Column(nullable = false)
   private Instant createdAt = Instant.now();

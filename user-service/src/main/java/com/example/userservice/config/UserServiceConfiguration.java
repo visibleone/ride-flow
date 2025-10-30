@@ -17,6 +17,7 @@ public class UserServiceConfiguration {
   public static final String REALM_ACCESS_CLAIM = "realm_access";
   public static final String ROLE_CLAIM_KEY = "roles";
   public static final String ROLE_PREFIX = "ROLE_";
+
   private final UserServiceConfigurationProperties properties;
 
   @Bean
