@@ -7,6 +7,9 @@ servers:
   - url: http://localhost:8080
     description: Local (Docker Compose via Gateway)
 
+security:
+  - bearerAuth: []
+
 paths:
   /users:
     get:

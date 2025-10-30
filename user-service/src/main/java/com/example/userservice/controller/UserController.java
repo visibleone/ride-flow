@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class UserController implements UsersApi {
   private final UserService userService;
+  private static final String DRIVER_ROLE = "driver";
 
+  @Override
   public ResponseEntity<UserRequest> createUser(UserCreateRequest userCreateRequest) {
     log.debug("createUser: {}", userCreateRequest);
     UserRequest userRequest = userService.createUser(userCreateRequest);
@@ -25,6 +27,7 @@ public class UserController implements UsersApi {
     return ResponseEntity.status(HttpStatus.CREATED).body(userRequest);
   }
 
+  @Override
   public ResponseEntity<UserRequest> getUserById(UUID id) {
     log.debug("getUserById: {}", id);
     UserRequest userRequest = userService.getUser(id);
@@ -32,6 +35,7 @@ public class UserController implements UsersApi {
     return ResponseEntity.ok(userRequest);
   }
 
+  @Override
   public ResponseEntity<List<UserRequest>> listUsers() {
     log.debug("listUsers");
     List<UserRequest> userRequests = userService.getAll();

@@ -10,16 +10,18 @@ spring:
       server:
         webflux:
           default-filters:
+            - PreserveHostHeader
             - RemoveResponseHeader=Server
           httpclient:
             connect-timeout: 3000
             response-timeout: 5s
 
+
   security:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://keycloak:8080/realms/rideflow
+          issuer-uri: http://localhost:8081/realms/rideflow
 
 resilience4j:
   circuitbreaker:

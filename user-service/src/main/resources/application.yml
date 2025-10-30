@@ -6,6 +6,11 @@ server:
 spring:
   application:
     name: user-service
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8081/realms/rideflow
   datasource:
     url: jdbc:postgresql://localhost:5432/userdb
     username: user
