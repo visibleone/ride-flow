@@ -1,3 +1,13 @@
 logging:
   level:
     com.example: debug
+    # Security and JWT internals
+    org.springframework.security: DEBUG
+    org.springframework.security.web: DEBUG
+    org.springframework.security.oauth2: DEBUG
+    org.springframework.security.oauth2.jwt: DEBUG
+    org.springframework.security.oauth2.server.resource: TRACE
+
+    # WebFlux / MVC (pick the one you use; your project looks like WebFlux via Gateway)
+    org.springframework.web: DEBUG
+    org.springframework.web.server: DEBUG

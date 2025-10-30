@@ -1,6 +1,26 @@
+spring.cloud.gateway:
+  # Enable detailed Netty wiretap at gateway layer
+  server:
+    webflux:
+      httpclient:
+        wiretap: true
+      httpserver:
+        wiretap: true
+
 logging:
   level:
     com.example: DEBUG
     org.springframework.cloud.gateway: DEBUG
     org.springframework.web.reactive.function.server: DEBUG
     reactor.netty.http.server: DEBUG
+    # Spring Security and OAuth2/JWT
+    org.springframework.security: DEBUG
+    org.springframework.security.web: DEBUG
+    org.springframework.security.oauth2: DEBUG
+    org.springframework.security.oauth2.jwt: DEBUG
+    org.springframework.security.oauth2.server.resource: TRACE
+
+    # WebFlux and Reactor Netty (I/O)
+    org.springframework.web: DEBUG
+    org.springframework.web.server: DEBUG
+    reactor.netty: INFO

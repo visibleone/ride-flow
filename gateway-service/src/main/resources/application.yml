@@ -10,7 +10,6 @@ spring:
       server:
         webflux:
           default-filters:
-            - PreserveHostHeader
             - RemoveResponseHeader=Server
           httpclient:
             connect-timeout: 3000

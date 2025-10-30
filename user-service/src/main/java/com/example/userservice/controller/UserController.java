@@ -10,6 +10,7 @@ import org.openapitools.model.UserCreateRequest;
 import org.openapitools.model.UserRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -35,6 +36,7 @@ public class UserController implements UsersApi {
     return ResponseEntity.ok(userRequest);
   }
 
+  @PreAuthorize("hasAuthority('ROLE_driver')")
   @Override
   public ResponseEntity<List<UserRequest>> listUsers() {
     log.debug("listUsers");
