@@ -17,6 +17,7 @@ public class User {
   private UUID id;
 
   @Column(nullable = false)
+  // TODO: May be better to have this as primary key
   private UUID keycloakId;
 
   @Column(nullable = false, unique = true)
