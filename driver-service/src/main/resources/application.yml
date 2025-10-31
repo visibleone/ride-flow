@@ -1,0 +1,18 @@
+server:
+  port: 8083
+  servlet:
+    context-path: /api/${driver-service.api-path-version}
+
+spring:
+  application:
+    name: driver-service
+
+springdoc:
+  api-docs:
+    path: /api-docs
+
+driver-service:
+  api-path-version: v1
+  api-version: 1.0.0
+  api-title: RideFlow Driver Service API
+  api-description: REST API for managing RideFlow drivers.
