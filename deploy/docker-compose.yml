@@ -37,7 +37,7 @@ services:
       KC_HOSTNAME_STRICT_HTTPS: false
       KC_HTTP_PORT: 8080
     volumes:
-      - ./keycloak/rideflow-realm-realm.json:/opt/keycloak/data/import/rideflow-realm-realm.json
+      - ./keycloak/rideflow-realm.json:/opt/keycloak/data/import/rideflow-realm.json
     ports:
       - "8081:8080"
     depends_on:
