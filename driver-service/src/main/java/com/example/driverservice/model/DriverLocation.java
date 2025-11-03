@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class DriverLocation {
-    private double lat;
-    private double lng;
+  private double lat;
+  private double lng;
 }
