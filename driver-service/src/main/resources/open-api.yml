@@ -108,7 +108,7 @@ paths:
         '401': { $ref: '#/components/responses/Unauthorized' }
         '500': { $ref: '#/components/responses/InternalError' }
 
-  /availability:
+  /drivers/availability:
     servers:
       - url: http://localhost:8083/internal
     get:
@@ -133,13 +133,15 @@ paths:
         '403': { $ref: '#/components/responses/Forbidden' }
         '500': { $ref: '#/components/responses/InternalError' }
 
-  /driver/release:
+  /drivers/{id}/release:
     servers:
       - url: http://localhost:8083/internal
     post:
       summary: Release driver after failed payment
       operationId: releaseDriver
       tags: [ Internal ]
+      parameters:
+        - $ref: '#/components/parameters/driverIdPath'
       # security:
       #   - internalAuth: []
       requestBody:
