@@ -3,12 +3,12 @@ package com.example.userservice.service;
 import java.util.List;
 import java.util.UUID;
 import org.openapitools.model.UserCreateRequest;
-import org.openapitools.model.UserRequest;
+import org.openapitools.model.UserPayload;
 
 public interface UserService {
-  UserRequest createUser(UserCreateRequest request);
+  UserPayload createUser(UserCreateRequest request);
 
-  UserRequest getUser(UUID id);
+  UserPayload getUser(UUID id);
 
-  List<UserRequest> getAll();
+  List<UserPayload> getAll();
 }

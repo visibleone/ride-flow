@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.openapitools.model.UserCreateRequest;
-import org.openapitools.model.UserRequest;
+import org.openapitools.model.UserPayload;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,7 +19,7 @@ public class UserServiceImpl implements UserService {
   private final UserMapper userMapper;
 
   @Override
-  public UserRequest createUser(UserCreateRequest request) {
+  public UserPayload createUser(UserCreateRequest request) {
     User user = userMapper.userCreateRequestToUser(request);
     User savedUser = userRepository.save(user);
 
@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public UserRequest getUser(UUID id) {
+  public UserPayload getUser(UUID id) {
     return userRepository
         .findById(id)
         .map(userMapper::userToUserRequest)
@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public List<UserRequest> getAll() {
+  public List<UserPayload> getAll() {
     return userRepository.findAll().stream().map(userMapper::userToUserRequest).toList();
   }
 }

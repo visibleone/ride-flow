@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.openapitools.model.UserCreateRequest;
-import org.openapitools.model.UserRequest;
+import org.openapitools.model.UserPayload;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -41,53 +41,53 @@ class UserServiceIntegrationTest {
     headers.setContentType(MediaType.APPLICATION_JSON);
 
     // act
-    ResponseEntity<UserRequest> response =
+    ResponseEntity<UserPayload> response =
         restTemplate.postForEntity(
-            baseUrl() + "/users", new HttpEntity<>(req, headers), UserRequest.class);
+            baseUrl() + "/users", new HttpEntity<>(req, headers), UserPayload.class);
 
     // assert
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-    UserRequest body = response.getBody();
+    UserPayload body = response.getBody();
     assertThat(body).isNotNull();
     assertThat(body.getId()).isNotNull();
     assertThat(body.getEmail()).isEqualTo("alice@example.com");
     assertThat(body.getName()).isEqualTo("Alice");
-    assertThat(body.getRole()).isEqualTo(UserRequest.RoleEnum.RIDER);
+    assertThat(body.getRole()).isEqualTo(UserPayload.RoleEnum.RIDER);
   }
 
   @Test
   void getUserById_shouldReturn200_forExistingUser() {
     // create a user first
-    UserRequest created = create("bob@example.com", "Bob", UserCreateRequest.RoleEnum.DRIVER);
+    UserPayload created = create("bob@example.com", "Bob", UserCreateRequest.RoleEnum.DRIVER);
 
     // act
-    ResponseEntity<UserRequest> response =
-        restTemplate.getForEntity(baseUrl() + "/users/" + created.getId(), UserRequest.class);
+    ResponseEntity<UserPayload> response =
+        restTemplate.getForEntity(baseUrl() + "/users/" + created.getId(), UserPayload.class);
 
     // assert
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-    UserRequest body = response.getBody();
+    UserPayload body = response.getBody();
     assertThat(body).isNotNull();
     assertThat(body.getId()).isEqualTo(created.getId());
     assertThat(body.getEmail()).isEqualTo("bob@example.com");
-    assertThat(body.getRole()).isEqualTo(UserRequest.RoleEnum.DRIVER);
+    assertThat(body.getRole()).isEqualTo(UserPayload.RoleEnum.DRIVER);
   }
 
   @Test
   void listUsers_shouldReturn200_andIncludeCreatedUsers() {
     // create two users
-    UserRequest u1 = create("carol@example.com", "Carol", UserCreateRequest.RoleEnum.RIDER);
-    UserRequest u2 = create("dave@example.com", "Dave", UserCreateRequest.RoleEnum.DRIVER);
+    UserPayload u1 = create("carol@example.com", "Carol", UserCreateRequest.RoleEnum.RIDER);
+    UserPayload u2 = create("dave@example.com", "Dave", UserCreateRequest.RoleEnum.DRIVER);
 
     // act
-    ResponseEntity<UserRequest[]> response =
-        restTemplate.getForEntity(baseUrl() + "/users", UserRequest[].class);
+    ResponseEntity<UserPayload[]> response =
+        restTemplate.getForEntity(baseUrl() + "/users", UserPayload[].class);
 
     // assert
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-    UserRequest[] users = response.getBody();
+    UserPayload[] users = response.getBody();
     assertThat(users).isNotNull();
-    assertThat(List.of(users)).extracting(UserRequest::getId).contains(u1.getId(), u2.getId());
+    assertThat(List.of(users)).extracting(UserPayload::getId).contains(u1.getId(), u2.getId());
   }
 
   @Test
@@ -100,10 +100,10 @@ class UserServiceIntegrationTest {
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
   }
 
-  private UserRequest create(String email, String name, UserCreateRequest.RoleEnum role) {
+  private UserPayload create(String email, String name, UserCreateRequest.RoleEnum role) {
     UserCreateRequest req = new UserCreateRequest(UUID.randomUUID(), email, name, role);
-    ResponseEntity<UserRequest> response =
-        restTemplate.postForEntity(baseUrl() + "/users", req, UserRequest.class);
+    ResponseEntity<UserPayload> response =
+        restTemplate.postForEntity(baseUrl() + "/users", req, UserPayload.class);
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
     return response.getBody();
   }

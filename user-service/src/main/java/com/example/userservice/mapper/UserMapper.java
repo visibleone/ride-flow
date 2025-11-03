@@ -7,7 +7,7 @@ import java.time.ZoneOffset;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.openapitools.model.UserCreateRequest;
-import org.openapitools.model.UserRequest;
+import org.openapitools.model.UserPayload;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
@@ -15,7 +15,7 @@ public interface UserMapper {
   @Mapping(target = "id", ignore = true)
   User userCreateRequestToUser(UserCreateRequest request);
 
-  UserRequest userToUserRequest(User user);
+  UserPayload userToUserRequest(User user);
 
   default OffsetDateTime instantToOffsetDateTime(Instant instant) {
     return instant == null ? null : instant.atOffset(ZoneOffset.UTC);

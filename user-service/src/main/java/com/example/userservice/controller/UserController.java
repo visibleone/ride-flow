@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.openapitools.api.UsersApi;
 import org.openapitools.model.UserCreateRequest;
-import org.openapitools.model.UserRequest;
+import org.openapitools.model.UserPayload;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,28 +22,28 @@ public class UserController implements UsersApi {
   private final UserService userService;
 
   @Override
-  public ResponseEntity<UserRequest> createUser(UserCreateRequest userCreateRequest) {
+  public ResponseEntity<UserPayload> createUser(UserCreateRequest userCreateRequest) {
     log.debug("createUser: {}", userCreateRequest);
-    UserRequest userRequest = userService.createUser(userCreateRequest);
+    UserPayload userPayload = userService.createUser(userCreateRequest);
 
-    return ResponseEntity.status(HttpStatus.CREATED).body(userRequest);
+    return ResponseEntity.status(HttpStatus.CREATED).body(userPayload);
   }
 
   @Override
-  public ResponseEntity<UserRequest> getUserById(UUID id) {
+  public ResponseEntity<UserPayload> getUserById(UUID id) {
     log.debug("getUserById: {}", id);
-    UserRequest userRequest = userService.getUser(id);
+    UserPayload userPayload = userService.getUser(id);
 
-    return ResponseEntity.ok(userRequest);
+    return ResponseEntity.ok(userPayload);
   }
 
   // TODO: Remove authority check (TEST ONLY)
   @PreAuthorize("hasAuthority('ROLE_driver')")
   @Override
-  public ResponseEntity<List<UserRequest>> listUsers() {
+  public ResponseEntity<List<UserPayload>> listUsers() {
     log.debug("listUsers");
-    List<UserRequest> userRequests = userService.getAll();
+    List<UserPayload> userPayloads = userService.getAll();
 
-    return ResponseEntity.ok(userRequests);
+    return ResponseEntity.ok(userPayloads);
   }
 }
