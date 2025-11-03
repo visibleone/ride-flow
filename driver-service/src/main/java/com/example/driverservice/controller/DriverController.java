@@ -22,12 +22,14 @@ public class DriverController implements DriversApi {
   }
 
   @Override
-  public ResponseEntity<Driver> createDriver(CreateDriver createDriver) {
+  public ResponseEntity<DriverPayload> createDriver(DriverCreateRequest createDriver) {
+    log.debug("createDriver: {}", createDriver);
+
     return DriversApi.super.createDriver(createDriver);
   }
 
   @Override
-  public ResponseEntity<Driver> getDriver(UUID id) {
+  public ResponseEntity<DriverPayload> getDriver(UUID id) {
     return DriversApi.super.getDriver(id);
   }
 
@@ -37,12 +39,12 @@ public class DriverController implements DriversApi {
   }
 
   @Override
-  public ResponseEntity<Driver> updateDriverLocation(UUID id, GeoLocation geoLocation) {
+  public ResponseEntity<DriverPayload> updateDriverLocation(UUID id, GeoLocation geoLocation) {
     return DriversApi.super.updateDriverLocation(id, geoLocation);
   }
 
   @Override
-  public ResponseEntity<Driver> updateDriverStatus(
+  public ResponseEntity<DriverPayload> updateDriverStatus(
       UUID id, UpdateDriverStatusRequest updateDriverStatusRequest) {
     return DriversApi.super.updateDriverStatus(id, updateDriverStatusRequest);
   }
