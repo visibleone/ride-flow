@@ -4,24 +4,15 @@ info:
   version: 1.0.0
   description: |
     Unified API combining public and internal operations for the Driver Service.
-    - Public endpoints are served under `/api`.
-    - Internal endpoints are served under `/internal`.
-    This single spec uses per-path `servers` to map each group to its base URL.
-
-tags:
-  - name: Drivers
-    description: Public driver management endpoints
-  - name: Internal
-    description: Internal, service-to-service endpoints
+servers:
+  - url: http://localhost:8080
+    description: Local (Docker Compose via Gateway)
 
 paths:
   /drivers/{id}:
-    servers:
-      - url: http://localhost:8083/api
     get:
       summary: Get driver profile
       operationId: getDriver
-      tags: [ Drivers ]
       parameters:
         - $ref: '#/components/parameters/driverIdPath'
       responses:
@@ -36,12 +27,9 @@ paths:
         '500': { $ref: '#/components/responses/InternalError' }
 
   /drivers/{id}/status:
-    servers:
-      - url: http://localhost:8083/api
     patch:
       summary: Update driver status
       operationId: updateDriverStatus
-      tags: [ Drivers ]
       parameters:
         - $ref: '#/components/parameters/driverIdPath'
       requestBody:
@@ -65,12 +53,9 @@ paths:
         '500': { $ref: '#/components/responses/InternalError' }
 
   /drivers/{id}/location:
-    servers:
-      - url: http://localhost:8083/api
     patch:
       summary: Update driver location
       operationId: updateDriverLocation
-      tags: [ Drivers ]
       parameters:
         - $ref: '#/components/parameters/driverIdPath'
       requestBody:
@@ -87,12 +72,9 @@ paths:
         '500': { $ref: '#/components/responses/InternalError' }
 
   /drivers:
-    servers:
-      - url: http://localhost:8083/internal
     post:
       summary: Create driver profile
       operationId: createDriver
-      tags: [ Internal ]
       # security:
       #   - bearerAuth: []
       requestBody:
@@ -109,12 +91,9 @@ paths:
         '500': { $ref: '#/components/responses/InternalError' }
 
   /drivers/availability:
-    servers:
-      - url: http://localhost:8083/internal
     get:
       summary: Check available drivers near a location
       operationId: checkAvailability
-      tags: [ Internal ]
       # security:
       #   - internalAuth: []
       parameters:
@@ -134,12 +113,9 @@ paths:
         '500': { $ref: '#/components/responses/InternalError' }
 
   /drivers/{id}/release:
-    servers:
-      - url: http://localhost:8083/internal
     post:
       summary: Release driver after failed payment
       operationId: releaseDriver
-      tags: [ Internal ]
       parameters:
         - $ref: '#/components/parameters/driverIdPath'
       # security:
@@ -186,16 +162,16 @@ components:
       required: [ userId, vehicle, licenseNumber ]
       properties:
         userId: { type: string, format: uuid }
-        vehicle: { type: string }
-        licenseNumber: { type: string }
+        vehicle: { type: string, example: "Toyota Prius 2023 - Silver" }
+        licenseNumber: { type: string, example: "DL-2024-123456" }
 
     Driver:
       type: object
       properties:
         id: { type: string, format: uuid }
         userId: { type: string, format: uuid }
-        vehicle: { type: string }
-        licenseNumber: { type: string }
+        vehicle: { type: string, example: "Toyota Prius 2023 - Silver" }
+        licenseNumber: { type: string, example: "DL-2024-123456" }
         status: { $ref: '#/components/schemas/DriverStatus' }
         location: { $ref: '#/components/schemas/GeoLocation' }
         createdAt: { type: string, format: date-time }
