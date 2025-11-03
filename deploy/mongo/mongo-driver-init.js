@@ -6,4 +6,5 @@ db.createUser({
     roles: [{ role: "readWrite", db: "driverdb" }]
 });
 
+// To initialize the database with some data:
 // db.myCollection.insertOne({ initialized: true });

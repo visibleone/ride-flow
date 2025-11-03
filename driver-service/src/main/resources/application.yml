@@ -6,6 +6,14 @@ server:
 spring:
   application:
     name: driver-service
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: driverdb
+      username: driverappuser
+      password: driverappsecret
+      authentication-database: admin
 
 springdoc:
   api-docs:
