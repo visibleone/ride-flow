@@ -3,7 +3,6 @@ package com.example.driverservice.model;
 import java.time.Instant;
 import java.util.UUID;
 import lombok.Data;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
@@ -27,6 +26,5 @@ public class Driver {
   private DriverLocation driverLocation;
 
   private DriverStatus status = DriverStatus.AVAILABLE;
-  @CreatedDate private Instant createdAt;
   @LastModifiedDate private Instant updatedAt;
 }

@@ -174,7 +174,6 @@ components:
         licenseNumber: { type: string, example: "DL-2024-123456" }
         status: { $ref: '#/components/schemas/DriverStatus' }
         location: { $ref: '#/components/schemas/GeoLocation' }
-        createdAt: { type: string, format: date-time }
         updatedAt: { type: string, format: date-time }
 
     AvailabilityResponse:

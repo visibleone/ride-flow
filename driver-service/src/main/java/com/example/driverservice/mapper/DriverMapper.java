@@ -16,19 +16,19 @@ public interface DriverMapper {
 
   @Mapping(target = "id", source = "request", qualifiedByName = "generateId")
   @Mapping(target = "driverLocation", ignore = true)
-  @Mapping(target = "createdAt", ignore = true)
   @Mapping(target = "updatedAt", ignore = true)
   @Mapping(target = "status", ignore = true)
   Driver driverCreateRequestToDriver(DriverCreateRequest request);
 
+  @Mapping(target = "location", source = "driverLocation")
   DriverPayload driverToDriverPayload(Driver savedDriver);
-
-  default OffsetDateTime instantToOffsetDateTime(Instant instant) {
-    return instant == null ? null : instant.atOffset(ZoneOffset.UTC);
-  }
 
   @Named("generateId")
   default UUID generateId(DriverCreateRequest request) {
     return UUID.randomUUID();
+  }
+
+  default OffsetDateTime instantToOffsetDateTime(Instant instant) {
+    return instant == null ? null : instant.atOffset(ZoneOffset.UTC);
   }
 }
