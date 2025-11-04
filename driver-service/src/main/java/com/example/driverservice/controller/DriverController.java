@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.openapitools.api.DriversApi;
 import org.openapitools.model.*;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,8 +25,9 @@ public class DriverController implements DriversApi {
   @Override
   public ResponseEntity<DriverPayload> createDriver(DriverCreateRequest createDriver) {
     log.debug("createDriver: {}", createDriver);
+    DriverPayload driverPayload = driverService.createDriver(createDriver);
 
-    return DriversApi.super.createDriver(createDriver);
+    return ResponseEntity.status(HttpStatus.CREATED).body(driverPayload);
   }
 
   @Override

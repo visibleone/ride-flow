@@ -8,13 +8,9 @@ spring:
     name: driver-service
   data:
     mongodb:
-      host: localhost
-      port: 27017
-      database: driverdb
-      username: driverappuser
-      password: driverappsecret
-      authentication-database: admin
+      uri: mongodb://driverappuser:driverappsecret@localhost:27017/driverdb
       uuid-representation: standard
+      auto-index-creation: true
 
 springdoc:
   api-docs:

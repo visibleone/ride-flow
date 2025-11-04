@@ -7,6 +7,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -14,7 +15,10 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Data
 public class Driver {
   @Id private UUID id;
+
+  @Indexed(unique = true)
   private UUID userId;
+
   private String vehicle;
   private String licenseNumber;
 
@@ -22,7 +26,7 @@ public class Driver {
   @GeoSpatialIndexed
   private DriverLocation driverLocation;
 
-  private DriverStatus status;
+  private DriverStatus status = DriverStatus.AVAILABLE;
   @CreatedDate private Instant createdAt;
   @LastModifiedDate private Instant updatedAt;
 }
