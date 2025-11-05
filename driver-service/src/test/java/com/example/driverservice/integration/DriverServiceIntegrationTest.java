@@ -17,10 +17,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
+import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.testcontainers.containers.MongoDBContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -98,5 +98,31 @@ class DriverServiceIntegrationTest {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.available").value(true))
         .andExpect(jsonPath("$.count").value(2));
+  }
+
+  @Test
+  void createDriver_withDuplicateUserId_shouldReturn409_andErrorMessage() throws Exception {
+    // arrange
+    UUID userId = UUID.randomUUID();
+    DriverCreateRequest req1 = new DriverCreateRequest(userId, "Tesla Model 3", "TES-123");
+
+    // first creation succeeds
+    mockMvc
+        .perform(
+            post("/drivers")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(req1)))
+        .andExpect(status().isCreated());
+
+    // second creation with same userId should fail with 409
+    DriverCreateRequest req2 = new DriverCreateRequest(userId, "Toyota Corolla", "ABC-999");
+
+    mockMvc
+        .perform(
+            post("/drivers")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(req2)))
+        .andExpect(status().isConflict())
+        .andExpect(jsonPath("$.message").value("A driver with this userId already exists"));
   }
 }
