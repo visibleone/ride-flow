@@ -1,110 +1,107 @@
 package com.example.userservice.integration;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.List;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.openapitools.model.UserCreateRequest;
 import org.openapitools.model.UserPayload;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.web.servlet.MockMvc;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest
+@AutoConfigureMockMvc
+@Testcontainers
 @ActiveProfiles("test")
 class UserServiceIntegrationTest {
+  @Container @ServiceConnection
+  static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16");
 
-  @LocalServerPort private int port;
-
-  @Autowired private TestRestTemplate restTemplate;
-
-  private String baseUrl() {
-    return "http://localhost:" + port + "/api/v1";
-  }
+  @Autowired private MockMvc mockMvc;
+  @Autowired private ObjectMapper objectMapper;
 
   @Test
-  void createUser_shouldReturn201_andPersistedUser() {
+  void createUser_shouldReturn201_andPersistedUser() throws Exception {
     // arrange
-    UserCreateRequest req =
+    UserCreateRequest request =
         new UserCreateRequest(
             UUID.randomUUID(), "alice@example.com", "Alice", UserCreateRequest.RoleEnum.RIDER);
 
-    HttpHeaders headers = new HttpHeaders();
-    headers.setContentType(MediaType.APPLICATION_JSON);
-
-    // act
-    ResponseEntity<UserPayload> response =
-        restTemplate.postForEntity(
-            baseUrl() + "/users", new HttpEntity<>(req, headers), UserPayload.class);
-
-    // assert
-    assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-    UserPayload body = response.getBody();
-    assertThat(body).isNotNull();
-    assertThat(body.getId()).isNotNull();
-    assertThat(body.getEmail()).isEqualTo("alice@example.com");
-    assertThat(body.getName()).isEqualTo("Alice");
-    assertThat(body.getRole()).isEqualTo(UserPayload.RoleEnum.RIDER);
+    // act & assert
+    mockMvc
+        .perform(
+            post("/users")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.id").exists())
+        .andExpect(jsonPath("$.email").value("alice@example.com"))
+        .andExpect(jsonPath("$.name").value("Alice"))
+        .andExpect(jsonPath("$.role").value(UserPayload.RoleEnum.RIDER.toString()));
   }
 
   @Test
-  void getUserById_shouldReturn200_forExistingUser() {
+  void getUserById_shouldReturn200_forExistingUser() throws Exception {
     // create a user first
     UserPayload created = create("bob@example.com", "Bob", UserCreateRequest.RoleEnum.DRIVER);
 
-    // act
-    ResponseEntity<UserPayload> response =
-        restTemplate.getForEntity(baseUrl() + "/users/" + created.getId(), UserPayload.class);
-
-    // assert
-    assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-    UserPayload body = response.getBody();
-    assertThat(body).isNotNull();
-    assertThat(body.getId()).isEqualTo(created.getId());
-    assertThat(body.getEmail()).isEqualTo("bob@example.com");
-    assertThat(body.getRole()).isEqualTo(UserPayload.RoleEnum.DRIVER);
+    // act & assert
+    mockMvc
+        .perform(get("/users/" + created.getId()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.id").value(created.getId().toString()))
+        .andExpect(jsonPath("$.email").value("bob@example.com"))
+        .andExpect(jsonPath("$.name").value("Bob"))
+        .andExpect(jsonPath("$.role").value(UserPayload.RoleEnum.DRIVER.toString()));
   }
 
   @Test
-  void listUsers_shouldReturn200_andIncludeCreatedUsers() {
+  void listUsers_shouldReturn200_andIncludeCreatedUsers() throws Exception {
     // create two users
     UserPayload u1 = create("carol@example.com", "Carol", UserCreateRequest.RoleEnum.RIDER);
     UserPayload u2 = create("dave@example.com", "Dave", UserCreateRequest.RoleEnum.DRIVER);
 
-    // act
-    ResponseEntity<UserPayload[]> response =
-        restTemplate.getForEntity(baseUrl() + "/users", UserPayload[].class);
-
-    // assert
-    assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-    UserPayload[] users = response.getBody();
-    assertThat(users).isNotNull();
-    assertThat(List.of(users)).extracting(UserPayload::getId).contains(u1.getId(), u2.getId());
+    // act & assert
+    mockMvc
+        .perform(get("/users"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$").isArray())
+        .andExpect(jsonPath("$[?(@.id == '" + u1.getId() + "')]").exists())
+        .andExpect(jsonPath("$[?(@.id == '" + u2.getId() + "')]").exists());
   }
 
   @Test
-  void getUserById_shouldReturn404_forMissingUser() {
-    // act
-    ResponseEntity<String> response =
-        restTemplate.getForEntity(baseUrl() + "/users/" + UUID.randomUUID(), String.class);
-
-    // assert
-    assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+  void getUserById_shouldReturn404_forMissingUser() throws Exception {
+    // act & assert
+    mockMvc.perform(get("/users/" + UUID.randomUUID())).andExpect(status().isNotFound());
   }
 
-  private UserPayload create(String email, String name, UserCreateRequest.RoleEnum role) {
+  private UserPayload create(String email, String name, UserCreateRequest.RoleEnum role)
+      throws Exception {
     UserCreateRequest req = new UserCreateRequest(UUID.randomUUID(), email, name, role);
-    ResponseEntity<UserPayload> response =
-        restTemplate.postForEntity(baseUrl() + "/users", req, UserPayload.class);
-    assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-    return response.getBody();
+    String responseJson =
+        mockMvc
+            .perform(
+                post("/users")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(req)))
+            .andExpect(status().isCreated())
+            .andReturn()
+            .getResponse()
+            .getContentAsString();
+
+    return objectMapper.readValue(responseJson, UserPayload.class);
   }
 }
