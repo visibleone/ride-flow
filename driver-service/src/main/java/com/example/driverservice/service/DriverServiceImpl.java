@@ -22,7 +22,6 @@ public class DriverServiceImpl implements DriverService {
   private final DriverMapper driverMapper;
 
   @Override
-  // TODO: Check handling of DuplicateKeyException in tests
   public DriverPayload createDriver(DriverCreateRequest request) {
     Driver driver = driverMapper.driverCreateRequestToDriver(request);
     Driver savedDriver = driverRepository.save(driver);
