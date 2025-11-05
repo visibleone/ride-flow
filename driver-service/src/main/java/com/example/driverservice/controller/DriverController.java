@@ -19,7 +19,11 @@ public class DriverController implements DriversApi {
   @Override
   public ResponseEntity<AvailabilityResponse> checkAvailability(
       Double lat, Double lng, Double radius) {
-    return DriversApi.super.checkAvailability(lat, lng, radius);
+    log.debug("checkAvailability: lat={}, lng={}, radius={}", lat, lng, radius);
+
+    AvailabilityResponse response = driverService.checkAvailability(lat, lng, radius);
+
+    return ResponseEntity.ok(response);
   }
 
   @Override

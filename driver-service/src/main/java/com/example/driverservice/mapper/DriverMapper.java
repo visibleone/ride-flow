@@ -10,6 +10,8 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.openapitools.model.DriverCreateRequest;
 import org.openapitools.model.DriverPayload;
+import org.openapitools.model.GeoLocation;
+import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 
 @Mapper(componentModel = "spring")
 public interface DriverMapper {
@@ -22,6 +24,15 @@ public interface DriverMapper {
 
   @Mapping(target = "location", source = "driverLocation")
   DriverPayload driverToDriverPayload(Driver savedDriver);
+
+  default GeoLocation geoJsonPointToGeoLocation(GeoJsonPoint point) {
+    if (point == null) return null;
+    GeoLocation geoLocation = new GeoLocation();
+    geoLocation.setLat(point.getY());
+    geoLocation.setLng(point.getX());
+
+    return geoLocation;
+  }
 
   @Named("generateId")
   default UUID generateId(DriverCreateRequest request) {

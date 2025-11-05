@@ -5,6 +5,8 @@ import java.util.UUID;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
+import org.springframework.data.mongodb.core.index.GeoSpatialIndexType;
 import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -22,8 +24,8 @@ public class Driver {
   private String licenseNumber;
 
   @Field("location")
-  @GeoSpatialIndexed
-  private DriverLocation driverLocation;
+  @GeoSpatialIndexed(type = GeoSpatialIndexType.GEO_2DSPHERE)
+  private GeoJsonPoint driverLocation;
 
   private DriverStatus status = DriverStatus.AVAILABLE;
   @LastModifiedDate private Instant updatedAt;
