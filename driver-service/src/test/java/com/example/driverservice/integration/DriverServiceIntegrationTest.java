@@ -1,8 +1,5 @@
 package com.example.driverservice.integration;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -12,8 +9,8 @@ import com.example.driverservice.model.Driver;
 import com.example.driverservice.model.DriverStatus;
 import com.example.driverservice.repository.DriverRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.Arrays;
 import java.util.UUID;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openapitools.model.DriverCreateRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +18,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.testcontainers.containers.MongoDBContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -36,16 +33,18 @@ class DriverServiceIntegrationTest {
 
   @Autowired private MockMvc mockMvc;
   @Autowired private ObjectMapper objectMapper;
-  @MockitoBean private DriverRepository driverRepository;
+  @Autowired private DriverRepository driverRepository;
+
+  @BeforeEach
+  void cleanDb() {
+    driverRepository.deleteAll();
+  }
 
   @Test
   void createDriver_shouldReturn201_andPersistedDriver() throws Exception {
     // arrange
     UUID userId = UUID.randomUUID();
     DriverCreateRequest req = new DriverCreateRequest(userId, "Toyota Prius", "ABC-123");
-
-    when(driverRepository.save(any(Driver.class)))
-        .thenAnswer(invocation -> invocation.getArgument(0));
 
     // act & assert
     MvcResult result =
@@ -76,6 +75,7 @@ class DriverServiceIntegrationTest {
     d1.setVehicle("Car A");
     d1.setLicenseNumber("LIC-1");
     d1.setStatus(DriverStatus.AVAILABLE);
+    d1.setDriverLocation(new GeoJsonPoint(lng, lat));
 
     Driver d2 = new Driver();
     d2.setId(UUID.randomUUID());
@@ -83,10 +83,10 @@ class DriverServiceIntegrationTest {
     d2.setVehicle("Car B");
     d2.setLicenseNumber("LIC-2");
     d2.setStatus(DriverStatus.AVAILABLE);
+    d2.setDriverLocation(new GeoJsonPoint(lng + 0.01, lat + 0.01));
 
-    when(driverRepository.findByStatusAndDriverLocationNear(
-            eq(DriverStatus.AVAILABLE), any(), any()))
-        .thenReturn(Arrays.asList(d1, d2));
+    driverRepository.save(d1);
+    driverRepository.save(d2);
 
     // act & assert
     mockMvc
