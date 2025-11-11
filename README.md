@@ -1,7 +1,7 @@
 # RideFlow (Still in development)
 
-**RideFlow** is a **distributed, event-driven ride-sharing platform** built with **Spring Boot 3.5.6** and **Java 21**.
-It demonstrates modern microservice architecture patterns — combining synchronous REST communication and asynchronous messaging with Kafka — while showcasing clean separation of concerns, resilience patterns, and full cloud-native deployment capabilities.
+When done, **RideFlow** will be a **distributed, event-driven ride-sharing platform** built with **Spring Boot 3.5.6** and **Java 21**.
+It will demonstrates modern microservice architecture patterns — combining synchronous REST communication and asynchronous messaging with Kafka — while showcasing clean separation of concerns, resilience patterns, and full cloud-native deployment capabilities.
 
 ---
 
