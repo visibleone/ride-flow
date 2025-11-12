@@ -28,7 +28,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @WithMockUser(
     username = "test-user",
     roles = {"driver"})
- @ActiveProfiles("test")
+@ActiveProfiles("test")
 class UserServiceIntegrationTest {
   @Container @ServiceConnection
   static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16");
