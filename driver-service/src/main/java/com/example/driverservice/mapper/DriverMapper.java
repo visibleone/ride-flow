@@ -1,5 +1,8 @@
 package com.example.driverservice.mapper;
 
+import com.example.api.driver.model.DriverCreateRequest;
+import com.example.api.driver.model.DriverPayload;
+import com.example.api.driver.model.GeoLocation;
 import com.example.driverservice.model.Driver;
 import java.time.Instant;
 import java.time.OffsetDateTime;
@@ -8,9 +11,6 @@ import java.util.UUID;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
-import org.openapitools.model.DriverCreateRequest;
-import org.openapitools.model.DriverPayload;
-import org.openapitools.model.GeoLocation;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 
 @Mapper(componentModel = "spring")

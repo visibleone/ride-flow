@@ -34,3 +34,5 @@ build/
 
 ### Mac OS ###
 .DS_Store
+/api-contracts/src/main/java/com/example/api/driver/model/
+/api-contracts/src/main/java/com/example/api/user/model/

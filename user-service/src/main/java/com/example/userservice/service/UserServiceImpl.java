@@ -1,5 +1,7 @@
 package com.example.userservice.service;
 
+import com.example.api.user.model.UserCreateRequest;
+import com.example.api.user.model.UserPayload;
 import com.example.userservice.mapper.UserMapper;
 import com.example.userservice.model.User;
 import com.example.userservice.repository.UserRepository;
@@ -7,8 +9,6 @@ import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
-import org.openapitools.model.UserCreateRequest;
-import org.openapitools.model.UserPayload;
 import org.springframework.stereotype.Service;
 
 @Service

@@ -1,14 +1,14 @@
 package com.example.driverservice.service;
 
+import com.example.api.driver.model.AvailabilityResponse;
+import com.example.api.driver.model.DriverCreateRequest;
+import com.example.api.driver.model.DriverPayload;
 import com.example.driverservice.mapper.DriverMapper;
 import com.example.driverservice.model.Driver;
 import com.example.driverservice.model.DriverStatus;
 import com.example.driverservice.repository.DriverRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.openapitools.model.AvailabilityResponse;
-import org.openapitools.model.DriverCreateRequest;
-import org.openapitools.model.DriverPayload;
 import org.springframework.data.geo.Distance;
 import org.springframework.data.geo.Metrics;
 import org.springframework.data.geo.Point;

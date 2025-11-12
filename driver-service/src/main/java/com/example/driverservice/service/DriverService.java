@@ -1,8 +1,8 @@
 package com.example.driverservice.service;
 
-import org.openapitools.model.AvailabilityResponse;
-import org.openapitools.model.DriverCreateRequest;
-import org.openapitools.model.DriverPayload;
+import com.example.api.driver.model.AvailabilityResponse;
+import com.example.api.driver.model.DriverCreateRequest;
+import com.example.api.driver.model.DriverPayload;
 
 public interface DriverService {
   DriverPayload createDriver(DriverCreateRequest request);

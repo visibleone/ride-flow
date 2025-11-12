@@ -1,13 +1,13 @@
 package com.example.userservice.controller;
 
+import com.example.api.user.api.UsersApi;
+import com.example.api.user.model.UserCreateRequest;
+import com.example.api.user.model.UserPayload;
 import com.example.userservice.service.UserService;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.openapitools.api.UsersApi;
-import org.openapitools.model.UserCreateRequest;
-import org.openapitools.model.UserPayload;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

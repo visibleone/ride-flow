@@ -1,11 +1,11 @@
 package com.example.driverservice.controller;
 
+import com.example.api.driver.api.DriversApi;
+import com.example.api.driver.model.*;
 import com.example.driverservice.service.DriverService;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.openapitools.api.DriversApi;
-import org.openapitools.model.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;

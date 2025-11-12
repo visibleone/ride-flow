@@ -1,13 +1,13 @@
 package com.example.userservice.mapper;
 
+import com.example.api.user.model.UserCreateRequest;
+import com.example.api.user.model.UserPayload;
 import com.example.userservice.model.User;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.openapitools.model.UserCreateRequest;
-import org.openapitools.model.UserPayload;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {

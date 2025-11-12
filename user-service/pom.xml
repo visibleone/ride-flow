@@ -37,6 +37,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.example</groupId>
+            <artifactId>api-contracts</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
         </dependency>
@@ -148,6 +153,9 @@
                         <configuration>
                             <inputSpec>${project.basedir}/src/main/resources/open-api.yml</inputSpec>
                             <generatorName>spring</generatorName>
+                            <apiPackage>com.example.api.user.api</apiPackage>
+                            <modelPackage>com.example.api.user.model</modelPackage>
+                            <output>${project.build.directory}/generated-sources/openapi</output>
                             <configOptions>
                                 <useSpringBoot3>true</useSpringBoot3>
                                 <interfaceOnly>true</interfaceOnly>
@@ -181,6 +189,33 @@
                         </path>
                     </annotationProcessorPaths>
                 </configuration>
+            </plugin>
+            <!-- TODO: Here copying generated API contracts to api-contracts module. Consider delegate to CD pipeline in higher environments -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.3.1</version>
+                <executions>
+                    <execution>
+                        <id>copy-models-to-api-contracts</id>
+                        <phase>process-sources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.parent.basedir}/api-contracts/src/main/java/com/example/api/user/model</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${project.build.directory}/generated-sources/openapi/src/main/java/com/example/api/user/model</directory>
+                                    <includes>
+                                        <include>**/*.java</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                            <overwrite>true</overwrite>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

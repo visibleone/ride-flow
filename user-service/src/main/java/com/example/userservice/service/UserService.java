@@ -1,9 +1,9 @@
 package com.example.userservice.service;
 
+import com.example.api.user.model.UserCreateRequest;
+import com.example.api.user.model.UserPayload;
 import java.util.List;
 import java.util.UUID;
-import org.openapitools.model.UserCreateRequest;
-import org.openapitools.model.UserPayload;
 
 public interface UserService {
   UserPayload createUser(UserCreateRequest request);
