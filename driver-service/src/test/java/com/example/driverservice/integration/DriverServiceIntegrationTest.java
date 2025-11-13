@@ -19,6 +19,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.testcontainers.containers.MongoDBContainer;
@@ -28,6 +30,10 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @SpringBootTest
 @AutoConfigureMockMvc
 @Testcontainers
+@WithMockUser(
+    username = "test-user",
+    roles = {"driver"})
+@ActiveProfiles("test")
 class DriverServiceIntegrationTest {
   @Container @ServiceConnection static MongoDBContainer mongo = new MongoDBContainer("mongo:6.0");
 

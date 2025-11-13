@@ -36,4 +36,12 @@ public class RestExceptionHandler {
     return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
         .body("External service unavailable after retries. Please try again later");
   }
+
+  @ExceptionHandler(Exception.class)
+  public ResponseEntity<?> handleGeneralException(Exception ex) {
+    log.error("Unexpected error occurred: {}", ex.getMessage(), ex);
+
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .body("An unexpected error occurred. Please contact support if the problem persists.");
+  }
 }

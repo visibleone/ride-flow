@@ -11,6 +11,11 @@ spring:
       uri: mongodb://driverappuser:driverappsecret@localhost:27017/driverdb
       uuid-representation: standard
       auto-index-creation: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8081/realms/rideflow
 
 springdoc:
   api-docs:
