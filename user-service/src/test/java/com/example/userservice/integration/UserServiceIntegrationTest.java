@@ -1,12 +1,16 @@
 package com.example.userservice.integration;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.example.api.driver.model.DriverPayload;
 import com.example.api.user.model.UserCreateRequest;
 import com.example.api.user.model.UserPayload;
+import com.example.userservice.client.DriverClient;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
@@ -17,6 +21,7 @@ import org.springframework.boot.testcontainers.service.connection.ServiceConnect
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
@@ -35,6 +40,8 @@ class UserServiceIntegrationTest {
 
   @Autowired private MockMvc mockMvc;
   @Autowired private ObjectMapper objectMapper;
+  // TODO: Here mocking the external call to driver-service. Use wiremock instead.
+  @MockitoBean private DriverClient driverClient;
 
   @Test
   void createUser_shouldReturn201_andPersistedUser() throws Exception {
@@ -95,6 +102,9 @@ class UserServiceIntegrationTest {
   private UserPayload create(String email, String name, UserCreateRequest.RoleEnum role)
       throws Exception {
     UserCreateRequest req = new UserCreateRequest(UUID.randomUUID(), email, name, role);
+
+    when(driverClient.createDriver(any())).thenReturn(new DriverPayload());
+
     String responseJson =
         mockMvc
             .perform(
