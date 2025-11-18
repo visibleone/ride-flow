@@ -8,6 +8,6 @@ logging:
     org.springframework.security.oauth2.jwt: DEBUG
     org.springframework.security.oauth2.server.resource: TRACE
 
-    # WebFlux / MVC (pick the one you use; your project looks like WebFlux via Gateway)
+    # Web
     org.springframework.web: DEBUG
     org.springframework.web.server: DEBUG

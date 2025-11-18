@@ -15,12 +15,11 @@ spring:
             connect-timeout: 3000
             response-timeout: 5s
 
-
   security:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8081/realms/rideflow
+          issuer-uri: ${ISSUER_URL:http://localhost:8081/realms/rideflow}
 
 resilience4j:
   circuitbreaker:
@@ -30,3 +29,7 @@ resilience4j:
         minimum-number-of-calls: 5
         failure-rate-threshold: 50
         wait-duration-in-open-state: 5s
+
+gateway-service:
+  api-path-version: v1
+  users-service-url: ${USER_SERVICE_URL:http://localhost:8082}

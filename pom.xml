@@ -31,6 +31,7 @@
         <mapstruct.version>1.6.3</mapstruct.version>
         <spotless.version>3.0.0</spotless.version>
         <googleJavaFormat.version>1.29.0</googleJavaFormat.version>
+        <jib.maven.plugin.version>3.4.6</jib.maven.plugin.version>
     </properties>
 
     <dependencyManagement>

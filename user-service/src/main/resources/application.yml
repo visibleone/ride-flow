@@ -11,16 +11,16 @@ spring:
       client:
         config:
           driver-service:
-            url: http://localhost:8083
+            url: ${DRIVER_SERVICE_URL:http://localhost:8083}
   security:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8081/realms/rideflow
+          issuer-uri: ${ISSUER_URL:http://localhost:8081/realms/rideflow}
   datasource:
-    url: jdbc:postgresql://localhost:5432/userdb
-    username: user
-    password: user
+    url: ${DATASOURCE_URL:jdbc:postgresql://localhost:5432/userdb}
+    username: ${DB_USER:user}
+    password: ${DB_PASS:user}
   jpa:
     hibernate:
       ddl-auto: validate

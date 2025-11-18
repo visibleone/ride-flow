@@ -36,7 +36,7 @@ services:
     image: quay.io/keycloak/keycloak:26.3.1
     command:
       - start-dev
-#      - --import-realm
+    #      - --import-realm
     environment:
       KC_DB: postgres
       KC_DB_URL: jdbc:postgresql://keycloak-db:5432/keycloak
@@ -55,7 +55,34 @@ services:
     depends_on:
       - keycloak-db
 
+  # ---------- Services ----------
+  gateway-service:
+    image: gateway-service:latest
+    ports:
+      - "8080:8080"
+    depends_on:
+      - keycloak
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - USER_SERVICE_URL=http://user-service:8082
+      - ISSUER_URL=http://keycloak:8080/realms/rideflow
+
+  user-service:
+    image: user-service:latest
+    ports:
+      - "8082:8082"
+    depends_on:
+      - postgres-user
+      - keycloak
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-user:5432/userdb
+      - SPRING_DATASOURCE_USERNAME=user
+      - SPRING_DATASOURCE_PASSWORD=user
+      - DRIVER_SERVICE_URL=http://driver-service:8083
+      - ISSUER_URL=http://keycloak:8080/realms/rideflow
+
 volumes:
-  ride-flow-user-db: {}
-  ride-flow-keycloak-db: {}
-  ride-flow-driver-db: {}
+  ride-flow-user-db: { }
+  ride-flow-keycloak-db: { }
+  ride-flow-driver-db: { }
