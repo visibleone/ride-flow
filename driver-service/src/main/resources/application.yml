@@ -8,14 +8,18 @@ spring:
     name: driver-service
   data:
     mongodb:
-      uri: mongodb://driverappuser:driverappsecret@localhost:27017/driverdb
+      host: ${MONGO_HOST:localhost}
+      port: ${MONGO_PORT:27017}
+      database: ${MONGO_DB_NAME:driverdb}
+      username: ${MONGO_USER:driverappuser}
+      password: ${MONGO_PASSWORD:driverappsecret}
       uuid-representation: standard
       auto-index-creation: true
   security:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8081/realms/rideflow
+          issuer-uri: ${ISSUER_URL:http://localhost:8081/realms/rideflow}
 
 springdoc:
   api-docs:

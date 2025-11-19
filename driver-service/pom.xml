@@ -180,6 +180,30 @@
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>${jib.maven.plugin.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>dockerBuild</goal> <!-- Run Jib to build Docker image -->
+                        </goals>
+                        <phase>package</phase> <!-- Bind Jib to the package phase -->
+                    </execution>
+                </executions><!-- Use the latest version -->
+                <configuration>
+                    <from>
+                        <image>eclipse-temurin:21-jdk-alpine</image>
+                    </from>
+                    <to>
+                        <image>driver-service</image>
+                    </to>
+                    <container>
+                        <mainClass>com.example.driverservice.DriverServiceApplication</mainClass>
+                    </container>
+                </configuration>
+            </plugin>
             <!-- TODO: Here copying generated API contracts to api-contracts module. Consider delegate to CD pipeline in higher environments -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

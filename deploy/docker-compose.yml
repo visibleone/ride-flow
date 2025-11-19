@@ -82,6 +82,22 @@ services:
       - DRIVER_SERVICE_URL=http://driver-service:8083
       - ISSUER_URL=http://keycloak:8080/realms/rideflow
 
+  driver-service:
+    image: driver-service:latest
+    ports:
+      - "8083:8083"
+    depends_on:
+      - mongo-driver
+      - keycloak
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - MONGO_HOST=mongo-driver
+      - MONGO_PORT=27017
+      - MONGO_DB_NAME=driverdb
+      - MONGO_USER=driverappuser
+      - MONGO_PASSWORD=driverappsecret
+      - ISSUER_URL=http://keycloak:8080/realms/rideflow
+
 volumes:
   ride-flow-user-db: { }
   ride-flow-keycloak-db: { }
