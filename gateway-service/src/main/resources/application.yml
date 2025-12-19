@@ -21,6 +21,12 @@ spring:
         jwt:
           issuer-uri: ${ISSUER_URL:http://localhost:8081/realms/rideflow}
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+
 resilience4j:
   circuitbreaker:
     instances:
