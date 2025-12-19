@@ -10,9 +10,7 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 @Configuration
 @EnableWebFluxSecurity
 public class SecurityConfig {
-  private static final String[] AUTH_WHITELIST = {
-    "/actuator/**"
-  };
+  private static final String[] AUTH_WHITELIST = {"/actuator/**"};
 
   @Bean
   public SecurityWebFilterChain springWebFilterChain(ServerHttpSecurity http) {
